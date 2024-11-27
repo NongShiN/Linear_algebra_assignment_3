@@ -2,7 +2,9 @@
 
 ## Data Overview
 ### Preview
-[사진1]
+
+![사진1](https://github.com/user-attachments/assets/36c449f9-563d-44e0-a85c-de1b2055dd0b)
+
 - Generator observation data from 2019.02.01 to 2019.03.31
 
 ### Data types
@@ -86,5 +88,56 @@ SSE     | 8381.48 | 6713.46 | 111992.53 | 46172.69 |
 - The performance of the model should be interpreted by considering SAE and SSE together, with additional coefficients of determination (R²). It seems that the evaluation can be supplemented with indicators such as AIC.
 
 #### 1.4. Plotting
-[사진2]
 
+
+<img src="https://github.com/user-attachments/assets/08799083-0147-484b-9e10-d34f1fea40ec" alt="6" width="600"/>
+
+
+### What linear regression problem can the relationship between '요금' and other variables be interpreted as?
+#### 2.1. Multiple Linear Regression
+- Multiple linear regression should be used to analyze the relationship between bill and slope, horizontal, module (℃), and outside air (℃) in a given problem.
+- This is because several independent variables are likely to affect rates.
+
+#### 2.2. Basis
+- **Multiple independent variables**: Several variables such as slope, horizontal, module (℃), and outside air (℃) can affect the rate. Therefore, the influence of each variable should be considered simultaneously by applying multiple linear regression.
+ 
+- **Linear relationship**: The basic assumption of regression analysis is when the relationship between variables is linear. That is, a multiple linear regression model is used assuming that each independent variable has a linear effect on the rate.
+
+#### 2.3. Example of Multi Linear Regression
+  We can express Bill(Y) predict model  like that:
+  
+     Y = β0 + β1 ∗ 경사 + β2 ∗ 수평 + β3 ∗ 모듈(℃) + β4 ∗ 외기(℃) + ϵ
+
+Here,
+
+   ㅤㅤㅤY : Bill
+  
+   ㅤㅤㅤβ0 : intercept
+  
+   ㅤㅤㅤβ1, β2, β3, β4 : regression coefficients for each independent variable
+  
+   ㅤㅤㅤϵ : error term
+
+## Problem 2
+### Use cvx library to derive coefficients when linear regression is used between '전체합' and '경사'
+- How to use
+```matlab
+X_cvx = data{:, '경사'};
+Y_cvx = total_kWh;
+% Linear regression between '전체합' and '경사',
+% the coefficient value is derived using cvx
+cvx_begin
+ variables a b
+ minimize(sum((Y_cvx - (a * X_cvx + b)).^2))
+cvx_end
+```
+
+![사진3](https://github.com/user-attachments/assets/521202c5-d2e3-49e5-a657-e3ba7f8ddf1e)
+
+- Analysis Result
+
+![사진4](https://github.com/user-attachments/assets/1fbf917a-63a0-46c1-bfd7-f6ad3386377d)
+
+- Plotting
+
+<img src="https://github.com/user-attachments/assets/39121146-444d-4c84-a4c1-697915e7ae53" alt="6" width="500"/>
